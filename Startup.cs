@@ -28,6 +28,7 @@ namespace dotnet_rpg_new
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ICharacterService,CharacterService>();
             
         }
