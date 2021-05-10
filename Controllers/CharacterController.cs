@@ -7,8 +7,9 @@ namespace Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CharactersController : ControllerBase
+    public class CharacterController : ControllerBase
     {
+        
         // public static Character knight = new Character();
         private static List<Character> characters = new List<Character>{
             new Character(),
