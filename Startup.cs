@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services.CharacterServices;
 
 namespace dotnet_rpg_new
 {
@@ -26,8 +27,8 @@ namespace dotnet_rpg_new
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            services.AddScoped<ICharacterService,CharacterService>();
             
         }
 
