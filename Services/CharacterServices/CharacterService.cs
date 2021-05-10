@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Models;
 
 namespace Services.CharacterServices
@@ -10,18 +11,18 @@ namespace Services.CharacterServices
             new Character(),
             new Character { Id = 1,Name = "Sam" },
         };
-        public List<Character> AddCharacter(Character character)
+        public async Task<List<Character>> AddCharacter(Character character)
         {
             characters.Add(character);
             return characters;
         }
 
-        public List<Character> GetAllCharacter()
+        public async Task<List<Character>> GetAllCharacter()
         {
             return characters;
         }
 
-        public Character GetCharacterById(int id)
+        public async Task<Character> GetCharacterById(int id)
         {
             return characters.FirstOrDefault(c => c.Id == id);
         }

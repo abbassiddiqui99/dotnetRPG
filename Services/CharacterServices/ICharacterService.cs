@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Models;
 
 namespace Services.CharacterServices
 {
     public interface ICharacterService
     {
-        List<Character> GetAllCharacter();
-        Character GetCharacterById(int id);
-        List<Character> AddCharacter(Character character);
+        Task<List<Character>> GetAllCharacter();
+        Task<Character> GetCharacterById(int id);
+        Task<List<Character>> AddCharacter(Character character);
     }
 }

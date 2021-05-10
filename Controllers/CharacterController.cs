@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.CharacterServices;
@@ -19,19 +20,19 @@ namespace Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetAllCharacter()
+        public async Task<IActionResult> GetAllCharacter()
         {
-            return Ok(_characterService.GetAllCharacter());
+            return Ok(await _characterService.GetAllCharacter());
         }
         [HttpGet("{id}")]
-        public IActionResult GetCharacterById(int id)
+        public async Task<IActionResult> GetCharacterById(int id)
         {
-            return Ok(_characterService.GetCharacterById(id));
+            return Ok(await _characterService.GetCharacterById(id));
         }
         [HttpPost("")]
-        public IActionResult AddCharacter(Character character)
+        public async Task<IActionResult> AddCharacter(Character character)
         {
-            return Ok(_characterService.AddCharacter(character));
+            return Ok(await _characterService.AddCharacter(character));
         }
     }
 }
