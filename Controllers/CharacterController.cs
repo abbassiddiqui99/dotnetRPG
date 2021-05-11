@@ -1,30 +1,61 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Services.CharacterServices;
 
 namespace Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CharactersController : ControllerBase
+    public class CharacterController : ControllerBase
     {
-        // public static Character knight = new Character();
-        private static List<Character> characters = new List<Character>{
-            new Character(),
-            new Character { Id = 1,Name = "Sam" },
-        };
+        private readonly ICharacterService _characterService;
+
+        public CharacterController(ICharacterService characterService)
+        {
+            _characterService = characterService;
+
+        }
+
         [HttpGet("")]
-        public IActionResult Get(){
-            return Ok(characters);
+        public async Task<IActionResult> GetAllCharacter()
+        {
+            return Ok(await _characterService.GetAllCharacter());
         }
         [HttpGet("{id}")]
-        public IActionResult GetFirstCharacter(int id) => Ok(characters.FirstOrDefault(c => c.Id == id));
-
+        public async Task<IActionResult> GetCharacterById(int id)
+        {
+            return Ok(await _characterService.GetCharacterById(id));
+        }
         [HttpPost("")]
-        public IActionResult AddCharacter(Character character){
-            characters.Add(character);
-            return Ok(characters);
+        public async Task<IActionResult> AddCharacter(AddCharacterDto character)
+        {
+            return Ok(await _characterService.AddCharacter(character));
+        }
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateCharacter(UpdateCharacterDto character)
+        {
+            ServiceResponse<GetCharacterDto> response = await _characterService.UpdateCharacter(character);
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCharacter(int id)
+        {
+            ServiceResponse<List<GetCharacterDto>> response = await _characterService.DeleteCharacter(id);
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
     }
 }
