@@ -28,9 +28,9 @@ namespace Services.CharacterServices
         {
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             Character characterNew = _mapper.Map<Character>(character);
-            characterNew.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(characterNew);
-            serviceResponse.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+            await _context.Characters.AddAsync(characterNew);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = (_context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceResponse;
         }
 
@@ -56,13 +56,17 @@ namespace Services.CharacterServices
 
             try
             {
-                Character characterNew = characters.FirstOrDefault(c => c.Id == character.Id);
+                Character characterNew = await _context.Characters.FirstOrDefaultAsync(c => c.Id == character.Id);
                 characterNew.Name = character.Name;
                 characterNew.HitPoints = character.HitPoints;
                 characterNew.Strength = character.Strength;
                 characterNew.Defence = character.Defence;
                 characterNew.Intelligence = character.Intelligence;
                 characterNew.rpgEnum = character.rpgEnum;
+
+                _context.Characters.Update(characterNew);
+                await _context.SaveChangesAsync();
+
                 serviceResponse.Data = _mapper.Map<GetCharacterDto>(characterNew);
             }
             catch (System.Exception exp)
