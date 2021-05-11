@@ -18,12 +18,7 @@ namespace Services.CharacterServices
         {
             _context = context;
             _mapper = mapper;
-
         }
-        private static List<Character> characters = new List<Character>{
-            new Character(),
-            new Character { Id = 1,Name = "Sam" },
-        };
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto character)
         {
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -83,9 +78,10 @@ namespace Services.CharacterServices
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             try
             {
-                Character characterNew = characters.First(c => c.Id == id);
-                characters.Remove(characterNew);
-                serviceResponse.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+                Character characterNew = await _context.Characters.FirstAsync(c => c.Id == id);
+                _context.Characters.Remove(characterNew);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = (_context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             }
             catch (System.Exception exp)
             {
