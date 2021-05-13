@@ -34,6 +34,7 @@ namespace dotnet_rpg_new
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ICharacterService,CharacterService>();
+            services.AddScoped<IAuthRepository,AuthRepository>();
             
         }
 
