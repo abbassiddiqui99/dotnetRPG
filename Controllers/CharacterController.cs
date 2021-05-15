@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Dtos.Character;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,8 @@ namespace Controllers
         [HttpGet("")]
         public async Task<IActionResult> GetAllCharacter()
         {
-            return Ok(await _characterService.GetAllCharacter());
+            int id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _characterService.GetAllCharacter(id));
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCharacterById(int id)
