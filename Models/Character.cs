@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Models
 {
     public class Character
@@ -11,5 +13,7 @@ namespace Models
         public RpgEnum rpgEnum { get; set; } = RpgEnum.Knight;
         public User User { get; set; }
         public Weapon Weapon { get; set; }
+        public List<CharacterSkill> MyProperty { get; set; }
+
     }
 }
