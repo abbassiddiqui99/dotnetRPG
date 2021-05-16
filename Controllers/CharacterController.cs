@@ -26,8 +26,7 @@ namespace Controllers
         [HttpGet("")]
         public async Task<IActionResult> GetAllCharacter()
         {
-            int id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            return Ok(await _characterService.GetAllCharacter(id));
+            return Ok(await _characterService.GetAllCharacter());
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCharacterById(int id)
