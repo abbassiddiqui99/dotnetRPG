@@ -39,6 +39,7 @@ namespace Controllers
             return Ok(await _characterService.AddCharacter(character));
         }
 
+        // The id of the character is going in body //
         [HttpPut("")]
         public async Task<IActionResult> UpdateCharacter(UpdateCharacterDto character)
         {
