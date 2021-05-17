@@ -60,18 +60,25 @@ namespace Services.CharacterServices
 
             try
             {
-                Character characterNew = await _context.Characters.FirstOrDefaultAsync(c => c.Id == character.Id);
-                characterNew.Name = character.Name;
-                characterNew.HitPoints = character.HitPoints;
-                characterNew.Strength = character.Strength;
-                characterNew.Defence = character.Defence;
-                characterNew.Intelligence = character.Intelligence;
-                characterNew.rpgEnum = character.rpgEnum;
-
-                _context.Characters.Update(characterNew);
-                await _context.SaveChangesAsync();
-
-                serviceResponse.Data = _mapper.Map<GetCharacterDto>(characterNew);
+                Character characterNew = await _context.Characters
+                    .Include(c => c.User)
+                    .FirstOrDefaultAsync(c => c.Id == character.Id);
+                if (characterNew.User.Id == GetUserId())
+                {
+                    characterNew.Name = character.Name;
+                    characterNew.HitPoints = character.HitPoints;
+                    characterNew.Strength = character.Strength;
+                    characterNew.Defence = character.Defence;
+                    characterNew.Intelligence = character.Intelligence;
+                    characterNew.rpgEnum = character.rpgEnum;
+                    _context.Characters.Update(characterNew);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = _mapper.Map<GetCharacterDto>(characterNew);
+                } else {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Character not found.";
+                }
+                
             }
             catch (System.Exception exp)
             {
