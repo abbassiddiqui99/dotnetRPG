@@ -7,6 +7,7 @@ using Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.CharacterServices;
+using Services.CharacterSkillService;
+using Services.WeaponServices;
 
 namespace dotnet_rpg_new
 {
@@ -49,7 +52,9 @@ namespace dotnet_rpg_new
                     ValidateAudience = false
                 };
             });
-            
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddScoped<IWeaponService,WeaponService>();
+            services.AddScoped<ICharacterSkillService,CharacterSkillService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

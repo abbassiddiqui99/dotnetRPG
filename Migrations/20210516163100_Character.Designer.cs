@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace dotnet_rpg_new.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210512003203_UserCharacterRelation")]
-    partial class UserCharacterRelation
+    [Migration("20210516163100_Character")]
+    partial class Character
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,9 +79,11 @@ namespace dotnet_rpg_new.Migrations
 
             modelBuilder.Entity("Models.Character", b =>
                 {
-                    b.HasOne("Models.User", null)
+                    b.HasOne("Models.User", "User")
                         .WithMany("Character")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Models.User", b =>

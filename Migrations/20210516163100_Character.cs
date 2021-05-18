@@ -2,7 +2,7 @@
 
 namespace dotnet_rpg_new.Migrations
 {
-    public partial class UserCharacterRelation : Migration
+    public partial class Character : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
