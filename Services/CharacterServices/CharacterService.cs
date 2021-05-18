@@ -40,7 +40,11 @@ namespace Services.CharacterServices
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacter()
         {
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            List<Character> dbCharacters = await _context.Characters.Where(c => c.User.Id == GetUserId()).ToListAsync();
+            List<Character> dbCharacters = await _context.Characters
+            .Where(c => c.User.Id == GetUserId())
+            .Include(c => c.Weapon)
+            .Include(c => c.CharacterSkills).ThenInclude(cs => cs.Skill)
+            .ToListAsync();
             serviceResponse.Data = (dbCharacters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceResponse;
         }
@@ -49,6 +53,8 @@ namespace Services.CharacterServices
         {
             ServiceResponse<GetCharacterDto> serviceResponse = new ServiceResponse<GetCharacterDto>();
             Character dbCharacter = await _context.Characters
+                .Include(c => c.Weapon)
+                .Include(c => c.CharacterSkills).ThenInclude(cs => cs.Skill)
                 .FirstOrDefaultAsync(c => c.Id == id && c.User.Id == GetUserId());
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
             return serviceResponse;
